@@ -1,14 +1,17 @@
 const express = require("express");
-const db = require("./database/db");
-
+const cors = require("cors");
 const app = express();
+const Db = require("./database/db");
 
-app.get("/", (req, res) => {
-  res.send("hello World");
-});
+const UserRoute = require("./routes/user");
+
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use("/user", UserRoute);
 
 app.listen(9000, () => {
-  db.connect()
+  Db.connect()
     .then(() => {
       console.log("Connetion Successful");
     })
