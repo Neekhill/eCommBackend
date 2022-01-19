@@ -3,8 +3,8 @@ const cors = require("cors");
 const app = express();
 const Db = require("./database/db");
 
-const UserRoute = require("./routes/user");
-const AuthRoute = require("./routes/auth");
+const UserRoute = require("./routes/userRoutes");
+const AuthRoute = require("./routes/authRoutes");
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));

@@ -4,6 +4,18 @@ const bluebird = require("bluebird");
 const bcrypt = bluebird.promisifyAll(require("bcrypt"));
 const TokenService = require("./tokenService");
 
+//register user
+async function registerUser({ username, email, password }) {
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  const newUser = Users({
+    username,
+    email,
+    password: hashedPassword,
+  });
+  return await newUser.save();
+}
+
 function login(email, password) {
   return Users.findOne({ email: email }).then((user) => {
     if (typeof user !== "undefined" && user !== null) {
@@ -23,4 +35,5 @@ function login(email, password) {
 
 module.exports = {
   login: login,
+  registerUser: registerUser,
 };

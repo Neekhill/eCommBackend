@@ -8,7 +8,6 @@ function generateToken(userId) {
   const payload = {
     userId: userId,
   };
-
   return jwt.signAsync(payload, SEC_KEY);
 }
 
