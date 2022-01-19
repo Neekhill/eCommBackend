@@ -27,7 +27,7 @@ async function login(email, reqpassword) {
     throw new Error(AuthErrorCodes.AuthErrorCodes.INVALID_PASSWORD);
   }
   console.log(`user = ${JSON.stringify(user)}`);
-  const token = await TokenService.generateToken(user._id);
+  const token = await TokenService.generateToken(user._id, user.isAdmin);
   const { password, ...others } = user._doc;
 
   return { ...others, token };

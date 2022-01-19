@@ -3,10 +3,11 @@ const jwt = bluebird.promisifyAll(require("jsonwebtoken"));
 
 const SEC_KEY = "heyeveryonethisisnikhilforyouall";
 
-function generateToken(userId) {
+function generateToken(userId, isAdmin) {
   console.log(`user id: ${userId}`);
   const payload = {
     userId: userId,
+    isAdmin: isAdmin,
   };
   return jwt.signAsync(payload, SEC_KEY);
 }
