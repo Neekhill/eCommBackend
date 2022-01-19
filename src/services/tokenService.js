@@ -11,13 +11,14 @@ function generateToken(userId) {
   return jwt.signAsync(payload, SEC_KEY);
 }
 
-function verifyToken(token) {
-  jwt.verifyAsync(token, secretKey, (err, user) => {
-    if (err) {
-      throw new Error("token is not valid");
-    }
+async function verifyToken(token) {
+  try {
+    const user = await jwt.verify(token, SEC_KEY);
+    //this gives a object which contains "userId" and because at the time of generating token our payload was { userId: userId}
     return user;
-  });
+  } catch (err) {
+    throw new Error(err);
+  }
 }
 
 module.exports = {

@@ -34,25 +34,36 @@ async function login(email, reqpassword) {
 }
 
 async function checkIfAuthenticated(req, res, next) {
-  const authHeader = req.headers.Authorization;
+  const authHeader = req.headers.token;
   // Bearer Token
-  if (typeof authHeader === "undefined" || authHeader == null) {
-    res.status(401).send("Token not found!");
-  }
-  token = authHeader.split(" ")[1];
-  try {
-    const user = await TokenService.verifyToken(token);
-    req.user = user;
-    next();
-  } catch (error) {
-    console.error(error);
-    res.status(401).send(error);
+  if (authHeader) {
+    token = authHeader.split(" ")[1];
+    try {
+      const user = await TokenService.verifyToken(token);
+      req.user = user;
+      next();
+    } catch (err) {
+      console.log(`err = ${err}`);
+      res.status(401).send(`${err}`);
+    }
+  } else {
+    return res.status(401).json("you are not authenticated");
   }
 }
 
 function checkIfAuthenticatedAndAuthorizes(req, res, next) {
   checkIfAuthenticated(req, res, () => {
-    if (req.user.id === req.params.id || req.user.isAdmin) {
+    if (req.user.userId === req.params.id || req.user.isAdmin) {
+      next();
+    } else {
+      res.status(403).json({ error: "You're not allowed to update this" });
+    }
+  });
+}
+
+function checkIfAuthenticatedAndAdmin(req, res, next) {
+  checkIfAuthenticated(req, res, () => {
+    if (req.user.isAdmin) {
       next();
     } else {
       res.status(403).json({ error: "You're not allowed to update this" });
@@ -65,4 +76,5 @@ module.exports = {
   registerUser: registerUser,
   checkIfAuthenticated: checkIfAuthenticated,
   checkIfAuthenticatedAndAuthorizes: checkIfAuthenticatedAndAuthorizes,
+  checkIfAuthenticatedAndAdmin: checkIfAuthenticatedAndAdmin,
 };
