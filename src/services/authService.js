@@ -33,7 +33,36 @@ async function login(email, reqpassword) {
   return { ...others, token };
 }
 
+async function checkIfAuthenticated(req, res, next) {
+  const authHeader = req.headers.Authorization;
+  // Bearer Token
+  if (typeof authHeader === "undefined" || authHeader == null) {
+    res.status(401).send("Token not found!");
+  }
+  token = authHeader.split(" ")[1];
+  try {
+    const user = await TokenService.verifyToken(token);
+    req.user = user;
+    next();
+  } catch (error) {
+    console.error(error);
+    res.status(401).send(error);
+  }
+}
+
+function checkIfAuthenticatedAndAuthorizes(req, res, next) {
+  checkIfAuthenticated(req, res, () => {
+    if (req.user.id === req.params.id || req.user.isAdmin) {
+      next();
+    } else {
+      res.status(403).json({ error: "You're not allowed to update this" });
+    }
+  });
+}
+
 module.exports = {
   login: login,
   registerUser: registerUser,
+  checkIfAuthenticated: checkIfAuthenticated,
+  checkIfAuthenticatedAndAuthorizes: checkIfAuthenticatedAndAuthorizes,
 };

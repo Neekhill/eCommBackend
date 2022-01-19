@@ -11,6 +11,16 @@ function generateToken(userId) {
   return jwt.signAsync(payload, SEC_KEY);
 }
 
+function verifyToken(token) {
+  jwt.verifyAsync(token, secretKey, (err, user) => {
+    if (err) {
+      throw new Error("token is not valid");
+    }
+    return user;
+  });
+}
+
 module.exports = {
   generateToken: generateToken,
+  verifyToken: verifyToken,
 };
