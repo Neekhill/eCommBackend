@@ -16,21 +16,21 @@ async function registerUser({ username, email, password }) {
   return await newUser.save();
 }
 
-function login(email, password) {
-  return Users.findOne({ email: email }).then((user) => {
-    if (typeof user !== "undefined" && user !== null) {
-      return bcrypt.compare(password, user.password).then((result) => {
-        if (result) {
-          console.log(`user = ${JSON.stringify(user)}`);
-          return TokenService.generateToken(user._id);
-        } else {
-          return Promise.reject(AuthErrorCodes.AuthErrorCodes.INVALID_PASSWORD);
-        }
-      });
-    } else {
-      return Promise.reject(AuthErrorCodes.AuthErrorCodes.INVALID_EMAIL);
-    }
-  });
+async function login(email, reqpassword) {
+  const user = await Users.findOne({ email: email });
+  console.log(user);
+  if (user === null) {
+    throw new Error(AuthErrorCodes.AuthErrorCodes.INVALID_EMAIL);
+  }
+  const result = await bcrypt.compare(reqpassword, user.password);
+  if (!result) {
+    throw new Error(AuthErrorCodes.AuthErrorCodes.INVALID_PASSWORD);
+  }
+  console.log(`user = ${JSON.stringify(user)}`);
+  const token = await TokenService.generateToken(user._id);
+  const { password, ...others } = user._doc;
+
+  return { ...others, token };
 }
 
 module.exports = {

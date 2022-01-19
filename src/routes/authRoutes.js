@@ -2,12 +2,13 @@ const express = require("express");
 const router = express.Router();
 const AuthService = require("../services/authService");
 
+//Register route
 router.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
   if (
-    username === "undefined" ||
-    email === "undefined" ||
-    password === "undefined"
+    typeof username === "undefined" ||
+    typeof email === "undefined" ||
+    typeof password === "undefined"
   ) {
     res.status(400).send("Invalid parameters");
   }
@@ -29,22 +30,19 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.get("/login", (req, res) => {
-  if (
-    typeof req.query.email === "undefined" ||
-    typeof req.query.password === "undefined"
-  ) {
+//Login route
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  if (typeof email === "undefined" || typeof password === "undefined") {
     res.status(400).send("Invalid parameters");
   } else {
-    console.log(`query = ${JSON.stringify(req.query)}`);
-    AuthService.login(req.query.email, req.query.password)
-      .then((token) => {
-        res.send(token);
-      })
-      .catch((errcode) => {
-        console.log(`errcode = ${errcode}`);
-        res.status(401).send(errcode);
-      });
+    try {
+      const userWithToken = await AuthService.login(email, password);
+      res.status(200).send(userWithToken);
+    } catch (errcode) {
+      console.log(`errcode = ${errcode}`);
+      res.status(401).send(`${errcode}`);
+    }
   }
 });
 
