@@ -1,6 +1,7 @@
 const express = require("express");
 
 const AuthService = require("../services/authService");
+const userService = require("../services/userService");
 const UserService = require("../services/userService");
 const router = express.Router();
 
@@ -51,5 +52,33 @@ router.get(
     }
   }
 );
+
+//Get all users
+router.get("/", AuthService.checkIfAuthenticatedAndAdmin, async (req, res) => {
+  const query = req.query.new;
+  try {
+    const users = await UserService.getUsers(query);
+    res.status(200).json({
+      users,
+    });
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+//Get users monthly stats i.e how many users joined every month
+router.get("/stats", async (req, res) => {
+  const date = new Date();
+  const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
+  console.log(lastYear);
+  try {
+    const data = await userService.getMontlyUserStats(lastYear);
+    res.status(200).json({
+      data,
+    });
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 
 module.exports = router;

@@ -35,8 +35,45 @@ async function getUser(id) {
   }
 }
 
+async function getUsers(query) {
+  try {
+    const users = query
+      ? await Users.find().sort({ _id: -1 }).limit(5) //by this we'll get latest users
+      : await Users.find();
+    return users;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
+async function getMontlyUserStats(lastYear) {
+  try {
+    const data = await Users.aggregate([
+      { $match: { createdAt: { $gte: lastYear } } },
+      {
+        $project: {
+          month: { $month: "$createdAt" },
+        },
+      },
+      {
+        $group: {
+          _id: "$month",
+          total: { $sum: 1 },
+        },
+      },
+    ]);
+    console.log(data);
+    return data;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}
+
 module.exports = {
   updateUser: updateUser,
   deleteUser: deleteUser,
   getUser: getUser,
+  getUsers: getUsers,
+  getMontlyUserStats: getMontlyUserStats,
 };
