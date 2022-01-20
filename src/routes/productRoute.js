@@ -15,36 +15,36 @@ router.post("/", async (req, res) => {
   }
 });
 
-// //Update user
-// router.put(
-//   "/:id",
-//   AuthService.checkIfAuthenticatedAndAuthorizes,
-//   async (req, res) => {
-//     try {
-//       const updatedUser = await UserService.updateUser(req);
-//       res.status(200).json(updatedUser);
-//     } catch (err) {
-//       res.status(500).json(err);
-//     }
-//   }
-// );
+//Update product
+router.put(
+  "/:id",
+  AuthService.checkIfAuthenticatedAndAdmin,
+  async (req, res) => {
+    try {
+      const updatedProduct = await ProductService.updateProduct(req);
+      res.status(200).json(updatedProduct);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  }
+);
 
-// //delete user
-// router.delete(
-//   "/:id",
-//   AuthService.checkIfAuthenticatedAndAuthorizes,
-//   async (req, res) => {
-//     try {
-//       const deletedUser = await UserService.deleteUser(req.params.id);
-//       res.status(200).json({
-//         message: "user deleted successfully",
-//         deletedUser,
-//       });
-//     } catch (err) {
-//       res.status(500).send(err);
-//     }
-//   }
-// );
+//delete product
+router.delete(
+  "/:id",
+  AuthService.checkIfAuthenticatedAndAdmin,
+  async (req, res) => {
+    try {
+      const deletedProduct = await ProductService.deleteProduct(req.params.id);
+      res.status(200).json({
+        message: "product deleted successfully",
+        deletedProduct,
+      });
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  }
+);
 
 // //get user - only admin can get user
 // router.get(
