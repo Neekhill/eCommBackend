@@ -1,5 +1,12 @@
 const bluebird = require("bluebird");
-const Carts = require("../database/models/cart");
+const Orders = require("../database/models/order");
 const bcrypt = bluebird.promisifyAll(require("bcrypt"));
 
-module.exports = {};
+async function createOrder(req) {
+  const newOrder = new Orders(req.body);
+  return await newOrder.save();
+}
+
+module.exports = {
+  createOrder: createOrder,
+};
