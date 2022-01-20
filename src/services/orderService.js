@@ -46,10 +46,36 @@ async function getOrders() {
   }
 }
 
+async function getMontlyIncome(previousMonth) {
+  try {
+    const income = await Orders.aggregate([
+      { $match: { createdAt: { $gte: previousMonth } } },
+      {
+        $project: {
+          month: { $month: "$createdAt" },
+          sales: "$amount",
+        },
+      },
+      {
+        $group: {
+          _id: "$month",
+          total: { $sum: "$sales" },
+        },
+      },
+    ]);
+
+    return income;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}
+
 module.exports = {
   createOrder: createOrder,
   updateOrder: updateOrder,
   deleteOrder: deleteOrder,
   getUserOrders: getUserOrders,
   getOrders: getOrders,
+  getMontlyIncome: getMontlyIncome,
 };

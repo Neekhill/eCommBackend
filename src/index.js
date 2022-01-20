@@ -12,11 +12,11 @@ const OrderRoute = require("./routes/orderRoute");
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use("/user", UserRoute);
+app.use("/users", UserRoute);
 app.use("/auth", AuthRoute);
-app.use("/product", ProductRoute);
-app.use("/cart", CartRoute);
-app.use("/orde", OrderRoute);
+app.use("/products", ProductRoute);
+app.use("/carts", CartRoute);
+app.use("/orders", OrderRoute);
 
 app.listen(9000, () => {
   Db.connect()

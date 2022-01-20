@@ -72,4 +72,29 @@ router.get("/", AuthService.checkIfAuthenticatedAndAdmin, async (req, res) => {
   }
 });
 
+//get montly income
+router.get(
+  "/income",
+  AuthService.checkIfAuthenticatedAndAdmin,
+  async (req, res) => {
+    const date = new Date();
+    const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
+    const previousMonth = new Date(
+      new Date().setMonth(lastMonth.getMonth() - 1)
+    );
+
+    try {
+      const income = await OrderService.getMontlyIncome(
+        lastMonth,
+        previousMonth
+      );
+      res.status(200).json({
+        income,
+      });
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  }
+);
+
 module.exports = router;
