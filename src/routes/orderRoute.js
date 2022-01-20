@@ -27,4 +27,21 @@ router.put(
   }
 );
 
+//delete order
+router.delete(
+  "/:id",
+  AuthService.checkIfAuthenticatedAndAdmin,
+  async (req, res) => {
+    try {
+      const deletedOrder = await OrderService.deleteOrder(req.params.id);
+      res.status(200).json({
+        message: "Order deleted successfully",
+        deletedOrder,
+      });
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  }
+);
+
 module.exports = router;
