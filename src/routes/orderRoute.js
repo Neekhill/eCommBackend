@@ -13,4 +13,18 @@ router.post("/", AuthService.checkIfAuthenticated, async (req, res) => {
   }
 });
 
+//Update order
+router.put(
+  "/:id",
+  AuthService.checkIfAuthenticatedAndAdmin,
+  async (req, res) => {
+    try {
+      const updatedOrder = await OrderService.updateOrder(req);
+      res.status(200).json(updatedOrder);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  }
+);
+
 module.exports = router;

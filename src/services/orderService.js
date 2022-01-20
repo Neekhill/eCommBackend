@@ -7,6 +7,18 @@ async function createOrder(req) {
   return await newOrder.save();
 }
 
+async function updateOrder(req) {
+  const updatedOrder = await Orders.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: req.body,
+    },
+    { new: true }
+  );
+  return updatedOrder;
+}
+
 module.exports = {
   createOrder: createOrder,
+  updateOrder: updateOrder,
 };
