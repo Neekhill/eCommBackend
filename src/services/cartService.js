@@ -51,5 +51,5 @@ module.exports = {
   updateCart: updateCart,
   deleteCart: deleteCart,
   getUserCart: getUserCart,
-  //   getProducts: getProducts,
+  getCarts: getCarts,
 };
