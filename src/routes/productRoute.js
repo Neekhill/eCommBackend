@@ -46,35 +46,31 @@ router.delete(
   }
 );
 
-// //get user - only admin can get user
-// router.get(
-//   "/find/:id",
-//   AuthService.checkIfAuthenticatedAndAdmin,
-//   async (req, res) => {
-//     try {
-//       const user = await UserService.getUser(req.params.id);
-//       const { password, ...others } = user._doc;
-//       res.status(200).json({
-//         others,
-//       });
-//     } catch (err) {
-//       res.status(500).send(err);
-//     }
-//   }
-// );
+//Get product
+router.get("/find/:id", async (req, res) => {
+  try {
+    const product = await ProductService.getProduct(req.params.id);
+    res.status(200).json({
+      product,
+    });
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 
-// //Get all users
-// router.get("/", AuthService.checkIfAuthenticatedAndAdmin, async (req, res) => {
-//   const query = req.query.new;
-//   try {
-//     const users = await UserService.getUsers(query);
-//     res.status(200).json({
-//       users,
-//     });
-//   } catch (err) {
-//     res.status(500).send(err);
-//   }
-// });
+//Get all products
+router.get("/", async (req, res) => {
+  const qNew = req.query.new;
+  const qCategory = req.query.category;
+  try {
+    const products = await ProductService.getProducts(qNew, qCategory);
+    res.status(200).json({
+      products,
+    });
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 
 // //Get users monthly stats i.e how many users joined every month
 // router.get("/stats", async (req, res) => {
