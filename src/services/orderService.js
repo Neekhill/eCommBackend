@@ -27,8 +27,18 @@ async function deleteOrder(id) {
   }
 }
 
+async function getUserOrders(userId) {
+  try {
+    const orders = await Orders.find();
+    return orders;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
 module.exports = {
   createOrder: createOrder,
   updateOrder: updateOrder,
   deleteOrder: deleteOrder,
+  getUserOrders: getUserOrders,
 };

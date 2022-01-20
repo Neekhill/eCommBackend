@@ -44,4 +44,20 @@ router.delete(
   }
 );
 
+//Get user order
+router.get(
+  "/find/:userId",
+  AuthService.checkIfAuthenticatedAndAuthorizes,
+  async (req, res) => {
+    try {
+      const orders = await OrderService.getUserOrders(req.params.userId);
+      res.status(200).json({
+        orders,
+      });
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  }
+);
+
 module.exports = router;

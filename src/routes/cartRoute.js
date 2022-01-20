@@ -45,16 +45,20 @@ router.delete(
 );
 
 //Get user cart
-router.get("/find/:userId", async (req, res) => {
-  try {
-    const cart = await CartService.getUserCart(req.params.userId);
-    res.status(200).json({
-      cart,
-    });
-  } catch (err) {
-    res.status(500).send(err);
+router.get(
+  "/find/:userId",
+  AuthService.checkIfAuthenticatedAndAuthorizes,
+  async (req, res) => {
+    try {
+      const cart = await CartService.getUserCart(req.params.userId);
+      res.status(200).json({
+        cart,
+      });
+    } catch (err) {
+      res.status(500).send(err);
+    }
   }
-});
+);
 
 //Get all cartss
 router.get("/", AuthService.checkIfAuthenticatedAndAdmin, async (req, res) => {
