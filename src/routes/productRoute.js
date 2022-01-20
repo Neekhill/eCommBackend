@@ -4,7 +4,7 @@ const AuthService = require("../services/authService");
 const ProductService = require("../services/productService");
 
 //create new product
-router.post("/", async (req, res) => {
+router.post("/", AuthService.checkIfAuthenticatedAndAdmin, async (req, res) => {
   try {
     const savedProduct = await ProductService.createProduct(req);
     res
@@ -71,20 +71,5 @@ router.get("/", async (req, res) => {
     res.status(500).send(err);
   }
 });
-
-// //Get users monthly stats i.e how many users joined every month
-// router.get("/stats", async (req, res) => {
-//   const date = new Date();
-//   const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
-//   console.log(lastYear);
-//   try {
-//     const data = await userService.getMontlyUserStats(lastYear);
-//     res.status(200).json({
-//       data,
-//     });
-//   } catch (err) {
-//     res.status(500).send(err);
-//   }
-// });
 
 module.exports = router;
