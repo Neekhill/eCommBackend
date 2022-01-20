@@ -36,9 +36,20 @@ async function getUserOrders(userId) {
   }
 }
 
+//get all Orders
+async function getOrders() {
+  try {
+    const orders = await Orders.find();
+    return orders;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
 module.exports = {
   createOrder: createOrder,
   updateOrder: updateOrder,
   deleteOrder: deleteOrder,
   getUserOrders: getUserOrders,
+  getOrders: getOrders,
 };
