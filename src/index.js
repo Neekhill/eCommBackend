@@ -8,6 +8,7 @@ const AuthRoute = require("./routes/authRoutes");
 const ProductRoute = require("./routes/productRoute");
 const CartRoute = require("./routes/cartRoute");
 const OrderRoute = require("./routes/orderRoute");
+const RazorpayRoute = require("./routes/razorpayRoute");
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -17,6 +18,7 @@ app.use("/auth", AuthRoute);
 app.use("/products", ProductRoute);
 app.use("/carts", CartRoute);
 app.use("/orders", OrderRoute);
+app.use("/checkout", RazorpayRoute);
 
 app.listen(9000, () => {
   Db.connect()

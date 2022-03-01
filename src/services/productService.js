@@ -40,7 +40,9 @@ async function getProducts(qNew, qCategory) {
   let products;
   try {
     if (qNew) {
-      products = await Products.find().sort({ createdAt: -1 }).limit(1);
+      products = await Products.find().sort({ createdAt: -1 }).limit(5);
+    } else if (qCategory === "allproducts") {
+      products = await Products.find();
     } else if (qCategory) {
       products = await Products.find({
         categories: {
