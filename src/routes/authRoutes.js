@@ -4,8 +4,10 @@ const AuthService = require("../services/authService");
 
 //Register route
 router.post("/register", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { firstname, lastname, username, email, password } = req.body;
   if (
+    typeof firstname === "undefined" ||
+    typeof lastname === "undefined" ||
     typeof username === "undefined" ||
     typeof email === "undefined" ||
     typeof password === "undefined"
@@ -15,6 +17,8 @@ router.post("/register", async (req, res) => {
 
   try {
     const newUserCreated = await AuthService.registerUser({
+      firstname,
+      lastname,
       username,
       email,
       password,
@@ -25,7 +29,7 @@ router.post("/register", async (req, res) => {
       createdUser: newUserCreated,
     });
   } catch (error) {
-    console.log(`Error in creation ${err}`);
+    console.log(`Error in creation ${error}`);
     res.status(501).send("User not created, due to error");
   }
 });

@@ -5,10 +5,18 @@ const bcrypt = bluebird.promisifyAll(require("bcrypt"));
 const TokenService = require("./tokenService");
 
 //register user
-async function registerUser({ username, email, password }) {
+async function registerUser({
+  firstname,
+  lastname,
+  username,
+  email,
+  password,
+}) {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
   const newUser = Users({
+    firstname,
+    lastname,
     username,
     email,
     password: hashedPassword,
@@ -41,6 +49,7 @@ async function checkIfAuthenticated(req, res, next) {
     try {
       const user = await TokenService.verifyToken(token);
       req.user = user;
+      //console.log(req.user);
       next();
     } catch (err) {
       console.log(`err = ${err}`);
