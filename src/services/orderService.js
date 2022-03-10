@@ -27,9 +27,9 @@ async function deleteOrder(id) {
   }
 }
 
-async function getUserOrders(userId) {
+async function getUserOrders(id) {
   try {
-    const orders = await Orders.find();
+    const orders = await Orders.find({ userId: id });
     return orders;
   } catch (err) {
     throw new Error(err);

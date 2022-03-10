@@ -45,12 +45,13 @@ router.delete(
 );
 
 //Get user order
+// :id is userId
 router.get(
-  "/find/:userId",
+  "/find/:id",
   AuthService.checkIfAuthenticatedAndAuthorizes,
   async (req, res) => {
     try {
-      const orders = await OrderService.getUserOrders(req.params.userId);
+      const orders = await OrderService.getUserOrders(req.params.id);
       res.status(200).json({
         orders,
       });

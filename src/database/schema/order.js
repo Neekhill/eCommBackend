@@ -1,17 +1,33 @@
-const mogoose = require("mongoose");
-const Schema = mogoose.Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const cartSchema = new Schema(
+const OrderSchema = new Schema(
   {
+    _id: { type: String },
     userId: { type: String, required: true },
     products: [
       {
-        productId: { type: String },
-      },
-      {
+        productId: {
+          type: String,
+        },
+        productTitle: {
+          type: String,
+        },
         quantity: {
           type: Number,
           default: 1,
+        },
+        size: {
+          type: String,
+        },
+        color: {
+          type: String,
+        },
+        img: {
+          type: String,
+        },
+        price: {
+          type: String,
         },
       },
     ],
@@ -19,7 +35,8 @@ const cartSchema = new Schema(
     address: { type: Object, required: true },
     status: { type: String, default: "pending" },
   },
-  { timestamps: true } // this will created at, updated at timestamps
+  { timestamps: true },
+  { _id: false }
 );
 
-module.exports = cartSchema;
+module.exports = OrderSchema;
