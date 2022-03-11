@@ -1,7 +1,8 @@
+const serverless = require("serverless-http");
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const Db = require("./database/db");
+//const Db = require("./database/db");
 
 const UserRoute = require("./routes/userRoutes");
 const AuthRoute = require("./routes/authRoutes");
@@ -20,7 +21,7 @@ app.use("/carts", CartRoute);
 app.use("/orders", OrderRoute);
 app.use("/checkout", RazorpayRoute);
 
-app.listen(9000, () => {
+/* app.listen(9000, () => {
   Db.connect()
     .then(() => {
       console.log("Connetion Successful");
@@ -29,4 +30,9 @@ app.listen(9000, () => {
       console.log(`Error found! ${err}`);
     });
   console.log("started listening");
-});
+}); */
+
+module.exports = {
+  app,
+  handler: serverless(app),
+};
