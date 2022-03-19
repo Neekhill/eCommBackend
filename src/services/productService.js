@@ -1,6 +1,6 @@
 const Products = require("../database/models/product");
 const bluebird = require("bluebird");
-const bcrypt = bluebird.promisifyAll(require("bcrypt"));
+const bcrypt = bluebird.promisifyAll(require("bcryptjs"));
 
 async function createProduct(req) {
   const newProduct = new Products(req.body);

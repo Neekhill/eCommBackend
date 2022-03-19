@@ -1,7 +1,7 @@
 const Users = require("../database/models/user");
 const AuthErrorCodes = require("./authError");
 const bluebird = require("bluebird");
-const bcrypt = bluebird.promisifyAll(require("bcrypt"));
+const bcrypt = bluebird.promisifyAll(require("bcryptjs"));
 const TokenService = require("./tokenService");
 
 //register user

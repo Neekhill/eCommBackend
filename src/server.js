@@ -1,7 +1,7 @@
 const Db = require("./database/db");
 const http = require("http");
 
-const { app } = require("./index");
+const app = require("./index");
 
 const httpServer = http.createServer(app);
 

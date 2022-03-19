@@ -1,6 +1,6 @@
 const Users = require("../database/models/user");
 const bluebird = require("bluebird");
-const bcrypt = bluebird.promisifyAll(require("bcrypt"));
+const bcrypt = bluebird.promisifyAll(require("bcryptjs"));
 
 async function updateUser(req) {
   if (req.body.password) {

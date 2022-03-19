@@ -1,6 +1,6 @@
 const bluebird = require("bluebird");
 const Orders = require("../database/models/order");
-const bcrypt = bluebird.promisifyAll(require("bcrypt"));
+const bcrypt = bluebird.promisifyAll(require("bcryptjs"));
 
 async function createOrder(req) {
   const newOrder = new Orders(req.body);

@@ -1,6 +1,6 @@
 const bluebird = require("bluebird");
 const Carts = require("../database/models/cart");
-const bcrypt = bluebird.promisifyAll(require("bcrypt"));
+const bcrypt = bluebird.promisifyAll(require("bcryptjs"));
 
 async function createCart(req) {
   const newCart = new Carts(req.body);

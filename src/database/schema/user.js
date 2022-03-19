@@ -7,7 +7,13 @@ const userSchema = new Schema(
     lastname: { type: String, required: true },
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
-    phone: { type: String, unique: true },
+    phone: {
+      type: String,
+      index: {
+        unique: true,
+        partialFilterExpression: { mobile: { $type: "string" } },
+      },
+    },
     birthday: { type: Date },
     shippingaddress: { type: String },
     billingaddress: { type: String },
