@@ -1,7 +1,7 @@
 const bluebird = require("bluebird");
 const jwt = bluebird.promisifyAll(require("jsonwebtoken"));
 
-const SEC_KEY = "heyeveryonethisisnikhilforyouall";
+/* onst SEC_KEY = "heyeveryonethisisnikhilforyouall"; */
 
 function generateToken(userId, isAdmin) {
   console.log(`user id: ${userId}`);
@@ -9,12 +9,12 @@ function generateToken(userId, isAdmin) {
     userId: userId,
     isAdmin: isAdmin,
   };
-  return jwt.signAsync(payload, SEC_KEY);
+  return jwt.signAsync(payload, process.env.JWT_SEC_KEY);
 }
 
 async function verifyToken(token) {
   try {
-    const user = await jwt.verify(token, SEC_KEY);
+    const user = await jwt.verify(token, process.env.JWT_SEC_KEY);
     //this gives a object which contains "userId" and because at the time of generating token our payload was { userId: userId}
     return user;
   } catch (err) {
